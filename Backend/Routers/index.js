@@ -1,10 +1,15 @@
 const express = require("express") ; 
-const jwt = require("jsonwebtoken") ; 
 const UserRouter = require("./user");
-
+const jwt = require("jsonwebtoken") ; 
+const { JWT_TOKEN } = require("../config")
 
 const router = express.Router() ; 
 
 router.use("/user",UserRouter) ; 
+
+
+
+
+
 
 module.exports = router ; 
