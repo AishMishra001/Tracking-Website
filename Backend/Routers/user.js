@@ -2,6 +2,8 @@ const express = require("express")  ;
 const jwt = require("jsonwebtoken") ; 
 const { JWT_TOKEN } = require("../config") ; 
 const zod = require("zod") ; 
+const User = require("../db");
+const e = require("express");
 
 const app = express() ;
 
@@ -29,9 +31,43 @@ UserRouter.post("/auth/signup",async (req,res)=>{
      }
 
      // check if user already exist 
+     const existingUser = await User.findOne({
+      where : {
+        username : req.body.username 
+      }
+     })
+
+     if(existingUser){
+      res.status(400).json({
+        message : "User already exist" ,
+      })
+     }
+
+     // putting user information in db 
+
+     const user = await User.create({
+      username : req.body.username , 
+      password : req.body.password ,
+      firstname : req.body.firstname ,
+      lastname : req.body.lastname 
+     })
+
+     // generate jwt token 
+
+     const token = jwt.sign({
+      id : user_id 
+     } , JWT_TOKEN) ; 
+
+     res.json({
+      message : "User created successfully" ,
+      token : token 
+     })
 
   } catch (error) {
-    
+    console.error("Error during signin",e) ; 
+    res.status(400).json({
+      message : "Error during signin" ,
+    })
   }
 })
 
