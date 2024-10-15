@@ -12,30 +12,27 @@ then(
   )  
 
   const userSchema = new mongoose.Schema({
-    username : {
+    email : {
       type: String , 
-      required : true , 
-      unique : true , 
-      trim : true 
+      required : true ,  
+      trim : true ,
+      unique : true 
 } , 
     password : {
       type : String , 
       required : true , 
-      unique : true , 
       trim : true 
     } , 
 
     firstname : {
       type : String ,
-      required : true , 
-      unique : true , 
+      required : true ,  
       trim : true
 
     } ,
     lastname : {
       type : String , 
       required : true , 
-      unique : true , 
       trim : true  
     }
 })

@@ -1,9 +1,8 @@
 const express = require("express")  ; 
 const jwt = require("jsonwebtoken") ; 
-const { JWT_TOKEN } = require("../config") ; 
 const zod = require("zod") ; 
 const User = require("../db");
-const e = require("express");
+const {JWT_TOKEN} = require("../config") ; 
 
 const app = express() ;
 
@@ -55,8 +54,8 @@ UserRouter.post("/auth/signup",async (req,res)=>{
      // generate jwt token 
 
      const token = jwt.sign({
-      id : user_id 
-     } , JWT_TOKEN) ; 
+      id : user._id , 
+     } ,  "RadhaKrishna") ; 
 
      res.json({
       message : "User created successfully" ,
@@ -64,14 +63,19 @@ UserRouter.post("/auth/signup",async (req,res)=>{
      })
 
   } catch (error) {
-    console.error("Error during signin",e) ; 
+    console.error("Error during signup",error) ; 
     res.status(400).json({
-      message : "Error during signin" ,
+      message : "Error during signup" ,
     })
   }
 })
 
-UserRouter.post("/auth/signin",async (req,res)=>{
+const signInBody = zod.object({
+  username : zod.string().min(3).max(20) ,
+  password : zod.string().max(20).min(3) 
+})
+
+UserRouter.post("/auth/signup",async (req,res)=>{
 
 })
 

@@ -1,3 +1,2 @@
-const JWT_TOKEN = 'Secret123@'
-
-module.exports = JWT_TOKEN ; 
+// config.js
+ // Use module.exports instead of export
