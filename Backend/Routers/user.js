@@ -71,12 +71,40 @@ UserRouter.post("/auth/signup",async (req,res)=>{
 })
 
 const signInBody = zod.object({
-  username : zod.string().min(3).max(20) ,
-  password : zod.string().max(20).min(3) 
+  username : zod.string().email() ,
+  password : zod.string().min(3) 
 })
+UserRouter.post("/auth/signin",async (req,res)=>{
+    const parseData = signInBody.safeParse(req.body) ; 
+   try {
 
-UserRouter.post("/auth/signup",async (req,res)=>{
-
+     if(!parseData.success){
+       return res.status(400).json({
+         message:  "Invalid request body" ,
+       })
+     }
+ 
+     const user = await User.findOne({
+       username : req.body.username  , 
+       password : req.body.password 
+     })
+ 
+     if(user){
+       const token = jwt.sign( {id : user._id} , 
+         "RadhaKrishna"
+        )
+ 
+       return res.status(200).json({
+         message : "User successfully signin" , 
+         token : token 
+       })
+     }
+   }catch(e){
+      console.error(e) ; 
+      return res.status(400).json({
+         message : "Error during signin" , 
+      })
+   }
 })
 
 UserRouter.post("/auth/google",async(req,res)=>{
